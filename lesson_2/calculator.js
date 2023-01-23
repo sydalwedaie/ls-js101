@@ -1,36 +1,55 @@
-const rlSync = require('readline-sync');
+const rlSync = require("readline-sync");
 
-console.log('\nWelcome to Calculator!');
-console.log('----------------------------');
-
-let num1 = Number(rlSync.question("Enter first number:\n"));
-let num2 = Number(rlSync.question("Enter second number:\n"));
-let op = rlSync.question("Enter type of operation:\n1) Add 2) Subtract 3) Multiply 4) Divide\n");
-
-let result;
-let opSign;
-
-switch (op) {
-  case '1':
-    result = num1 + num2;
-    opSign = '+';
-    break;
-  case '2':
-    result = num1 - num2;
-    opSign = '-';
-    break;
-  case '3':
-    result = num1 * num2;
-    opSign = '*';
-    break;
-  case '4':
-    result = num1 / num2;
-    opSign = '/';
-    break;
-  default:
-    console.log("Operation not valid");
+function prompt(message) {
+  console.log(`=> ${message}`);
 }
 
-console.log('----------------------------');
-if (opSign) console.log(`${num1} ${opSign} ${num2} = ${result}`);
+function invalidNumber(number) {
+  return number.trimStart() === "" || Number.isNaN(Number(number));
+}
 
+prompt("Welcome to Calculator!");
+
+prompt("Enter first number:");
+let num1 = rlSync.question();
+while (invalidNumber(num1)) {
+  prompt("Please enter a valid number:");
+  num1 = rlSync.question();
+}
+
+prompt("Enter second number:");
+let num2 = rlSync.question();
+while (invalidNumber(num2)) {
+  prompt("Please enter a valid number:");
+  num2 = rlSync.question();
+}
+
+prompt("Enter type of operation:\n   1) Add 2) Subtract 3) Multiply 4) Divide");
+let op = rlSync.question();
+while (invalidNumber(op) || Number(op) > 4) {
+  prompt("Please enter a valid option:");
+  op = rlSync.question();
+}
+
+let result, opSign;
+
+switch (op) {
+  case "1":
+    result = Number(num1) + Number(num2);
+    opSign = "+";
+    break;
+  case "2":
+    result = Number(num1) - Number(num2);
+    opSign = "-";
+    break;
+  case "3":
+    result = Number(num1) * Number(num2);
+    opSign = "*";
+    break;
+  case "4":
+    result = Number(num1) / Number(num2);
+    opSign = "/";
+    break;
+}
+
+prompt(`${num1} ${opSign} ${num2} = ${result}`);
