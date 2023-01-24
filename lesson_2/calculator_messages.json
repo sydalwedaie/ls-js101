@@ -1,11 +1,35 @@
 {
-  "welcom": "Welcome to Calculator!",
-  "num1": "Enter first number:",
-  "num2": "Enter second number:",
-  "validNum": "Please enter a valid number:",
-  "operation":
-    "Enter type of operation:\n   1) Add 2) Subtract 3) Multiply 4) Divide",
-  "validOption": "Please enter a valid option:",
-  "again": "Would you like to perform another calculation? (y)es, (n)o",
-  "newRound": "New Round\n------------"
+  "en": {
+    "welcome": "Welcome to Calculator!",
+    "num1": "Enter first number:",
+    "num2": "Enter second number:",
+    "validNum": "Please enter a valid number:",
+    "operation":
+      "Enter type of operation:\n   1) Add 2) Subtract 3) Multiply 4) Divide",
+    "validOption": "Please enter a valid option:",
+    "again": "Would you like to perform another calculation? (y)es, (n)o",
+    "newRound": "New Round\n------------"
+  }, 
+  "es": {
+    "welcome": "¡Bienvenido a Calculadora!",
+    "num1": "Ingrese el primer número:",
+    "num2": "Ingrese el segundo número:",
+    "validNum": "Ingrese un número válido:",
+    "operation":
+      "Ingrese el tipo de operación:\n 1) Sumar 2) Restar 3) Multiplicar 4) Dividir",
+    "validOption": "Ingrese una opción válida:",
+    "again": "¿Te gustaría realizar otro cálculo? (y)es, (n)o",
+    "newRound": "Nueva Ronda\n------------"
+  },
+  "fr": {
+    "welcom": "Bienvenue dans la calculatrice!",
+    "num1": "Entrez le premier numéro:",
+    "num2": "Entrez le deuxième numéro:",
+    "validNum": "Veuillez saisir un numéro valide:",
+    "operation":
+      "Entrez le type d'opération :\n 1) Additionner 2) Soustraire 3) Multiplier 4) Diviser",
+    "validOption": "Veuillez saisir une option valide:",
+    "again": "Voulez-vous effectuer un autre calcul ? (y)es, (n)o",
+    "newRound": "Nouveau tour\n------------"
+  }
 }

@@ -9,27 +9,44 @@ function invalidNumber(number) {
   return number.trimStart() === "" || Number.isNaN(Number(number));
 }
 
-prompt(messages.welcom);
+let lang = rlSync.question("=> 1) en 2) es 3) fr\n");
+while (!["1", "2", "3"].includes(lang)) {
+  lang = rlSync.question("=> 1) en 2) es 3) fr\n");
+}
+
+switch (lang) {
+  case "1":
+    lang = "en";
+    break;
+  case "2":
+    lang = "es";
+    break;
+  case "3":
+    lang = "fr";
+    break;
+}
+
+prompt(messages[lang].welcome);
 
 while (true) {
-  prompt(messages.num1);
+  prompt(messages[lang].num1);
   let num1 = rlSync.question();
   while (invalidNumber(num1)) {
-    prompt(messages.validNum);
+    prompt(messages[lang].validNum);
     num1 = rlSync.question();
   }
 
-  prompt(messages.num2);
+  prompt(messages[lang].num2);
   let num2 = rlSync.question();
   while (invalidNumber(num2)) {
-    prompt(messages.validNum);
+    prompt(messages[lang].validNum);
     num2 = rlSync.question();
   }
 
-  prompt(messages.operation);
+  prompt(messages[lang].operation);
   let op = rlSync.question();
   while (invalidNumber(op) || Number(op) > 4) {
-    prompt(messages.validOption);
+    prompt(messages[lang].validOption);
     op = rlSync.question();
   }
 
@@ -56,8 +73,8 @@ while (true) {
 
   prompt(`${num1} ${opSign} ${num2} = ${result}`);
 
-  prompt(messages.again);
+  prompt(messages[lang].again);
   let againPrompt = rlSync.question();
   if (againPrompt.toLowerCase()[0] !== "y") return;
-  prompt(messages.newRound);
+  prompt(messages[lang].newRound);
 }
