@@ -1,4 +1,5 @@
 const rlSync = require("readline-sync");
+let messages = require("./calculator_messages.json");
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -8,29 +9,27 @@ function invalidNumber(number) {
   return number.trimStart() === "" || Number.isNaN(Number(number));
 }
 
-prompt("Welcome to Calculator!");
+prompt(messages.welcom);
 
 while (true) {
-  prompt("Enter first number:");
+  prompt(messages.num1);
   let num1 = rlSync.question();
   while (invalidNumber(num1)) {
-    prompt("Please enter a valid number:");
+    prompt(messages.validNum);
     num1 = rlSync.question();
   }
 
-  prompt("Enter second number:");
+  prompt(messages.num2);
   let num2 = rlSync.question();
   while (invalidNumber(num2)) {
-    prompt("Please enter a valid number:");
+    prompt(messages.validNum);
     num2 = rlSync.question();
   }
 
-  prompt(
-    "Enter type of operation:\n   1) Add 2) Subtract 3) Multiply 4) Divide"
-  );
+  prompt(messages.operation);
   let op = rlSync.question();
   while (invalidNumber(op) || Number(op) > 4) {
-    prompt("Please enter a valid option:");
+    prompt(messages.validOption);
     op = rlSync.question();
   }
 
@@ -57,8 +56,8 @@ while (true) {
 
   prompt(`${num1} ${opSign} ${num2} = ${result}`);
 
-  prompt("Would you like to perform another calculation? (y)es, (n)o");
+  prompt(messages.again);
   let againPrompt = rlSync.question();
   if (againPrompt.toLowerCase()[0] !== "y") return;
-  console.log("----------\nNew Round\n----------");
+  prompt(messages.newRound);
 }

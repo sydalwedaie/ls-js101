@@ -1,0 +1,11 @@
+{
+  "welcom": "Welcome to Calculator!",
+  "num1": "Enter first number:",
+  "num2": "Enter second number:",
+  "validNum": "Please enter a valid number:",
+  "operation":
+    "Enter type of operation:\n   1) Add 2) Subtract 3) Multiply 4) Divide",
+  "validOption": "Please enter a valid option:",
+  "again": "Would you like to perform another calculation? (y)es, (n)o",
+  "newRound": "New Round\n------------"
+}
