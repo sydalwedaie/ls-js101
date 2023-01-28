@@ -34,7 +34,7 @@ prompt("Please enter the loan amount in USD:");
 let loanAmountUsd = parseFloat(rlSync.prompt());
 
 prompt("Please enter the APR in percentage points:");
-let loanApr = parseFloat(rlSync.prompt());
+let loanApr = parseFloat(rlSync.prompt()) / 100;
 
 prompt("please enter the loan duration:");
 let loanDurationYears = parseFloat(rlSync.prompt());
@@ -45,4 +45,4 @@ let loanPaymentMonthly =
   loanAmountUsd *
   (loanRateMonthly / (1 - Math.pow(1 + loanRateMonthly, -loanDurationMonths)));
 
-prompt(`Your monthly payment will be: $${loanPaymentMonthly}`);
+prompt(`Your monthly payment will be: $${loanPaymentMonthly.toFixed(2)}`);
