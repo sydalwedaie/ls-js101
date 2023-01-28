@@ -39,10 +39,18 @@ let loanApr = parseFloat(rlSync.prompt()) / 100;
 prompt("please enter the loan duration:");
 let loanDurationYears = parseFloat(rlSync.prompt());
 
-let loanRateMonthly = loanApr / 12;
 let loanDurationMonths = loanDurationYears * 12;
-let loanPaymentMonthly =
-  loanAmountUsd *
-  (loanRateMonthly / (1 - Math.pow(1 + loanRateMonthly, -loanDurationMonths)));
+
+function calculatePaymentMonthly(amount, apr, durationMonths) {
+  let rateMonthly = apr / 12;
+  return (
+    amount * (rateMonthly / (1 - Math.pow(1 + rateMonthly, -durationMonths)))
+  );
+}
+let loanPaymentMonthly = calculatePaymentMonthly(
+  loanAmountUsd,
+  loanApr,
+  loanDurationMonths
+);
 
 prompt(`Your monthly payment will be: $${loanPaymentMonthly.toFixed(2)}`);
