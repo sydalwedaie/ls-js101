@@ -31,6 +31,10 @@ let loanInfo = {
     years: 0,
     months: 0,
   },
+  monthlyPayment: 0,
+  paymentsCount: 0,
+  totalPayment: 0,
+  totalInterest: 0,
 };
 
 function prompt(message) {
@@ -83,10 +87,22 @@ while (true) {
   else prompt("Invalid entry.");
 }
 
-let loanPaymentMonthly = calculatePaymentMonthly(
+loanInfo.monthlyPayment = calculatePaymentMonthly(
   loanInfo.principal,
   loanInfo.annualPercentageRate / 12,
   loanInfo.duration.years * 12 + loanInfo.duration.months
 );
 
-prompt(`Your monthly payment will be: $${loanPaymentMonthly.toFixed(2)}`);
+loanInfo.paymentsCount =
+  loanInfo.duration.years * 12 + loanInfo.duration.months;
+loanInfo.totalPayment = loanInfo.paymentsCount * loanInfo.monthlyPayment;
+loanInfo.totalInterest = loanInfo.totalPayment - loanInfo.principal;
+
+prompt("Results");
+prompt(`Payment Every Month: $${loanInfo.monthlyPayment.toFixed(2)}`);
+prompt(
+  `Total of ${
+    loanInfo.paymentsCount
+  } Payments: $${loanInfo.totalPayment.toFixed(2)}`
+);
+prompt(`Total Interest: $${loanInfo.totalInterest.toFixed(2)}`);
