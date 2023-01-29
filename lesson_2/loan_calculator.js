@@ -67,10 +67,21 @@ while (true) {
 }
 
 prompt("Please enter the loan duration");
-prompt("Enter the number of years (whole numbers):");
-loanInfo.duration.years = parseFloat(rlSync.prompt());
-prompt("Enter the number of months (whole numbers):");
-loanInfo.duration.months = parseFloat(rlSync.prompt());
+
+while (true) {
+  prompt("Enter the number of years (whole numbers):");
+  loanInfo.duration.years = parseFloat(rlSync.prompt());
+  if (loanInfo.duration.years || loanInfo.duration.years === 0) {
+    break;
+  } else prompt("Invalid entry.");
+}
+
+while (true) {
+  prompt("Enter the number of months (whole numbers):");
+  loanInfo.duration.months = parseFloat(rlSync.prompt());
+  if (loanInfo.duration.months || loanInfo.duration.months === 0) break;
+  else prompt("Invalid entry.");
+}
 
 let loanPaymentMonthly = calculatePaymentMonthly(
   loanInfo.principal,
