@@ -24,33 +24,46 @@ print output
 
 const rlSync = require("readline-sync");
 
+let loanInfo = {
+  principal: 0,
+  annualPercentageRate: 0,
+  duration: {
+    years: 0,
+    months: 0,
+  },
+};
+
 function prompt(message) {
   console.log(`=> ${message}`);
+}
+
+function calculatePaymentMonthly(
+  principal,
+  monthlyPercentageRate,
+  durationMonths
+) {
+  return (
+    principal *
+    (monthlyPercentageRate /
+      (1 - Math.pow(1 + monthlyPercentageRate, -durationMonths)))
+  );
 }
 
 prompt("Welcome to Loan Calculator!\n");
 
 prompt("Please enter the loan amount in USD:");
-let loanAmountUsd = parseFloat(rlSync.prompt());
+loanInfo.principal = parseFloat(rlSync.prompt());
 
 prompt("Please enter the APR in percentage points:");
-let loanApr = parseFloat(rlSync.prompt()) / 100;
+loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
 
-prompt("please enter the loan duration:");
-let loanDurationYears = parseFloat(rlSync.prompt());
+prompt("please enter the loan duration in years:");
+loanInfo.duration.years = parseFloat(rlSync.prompt());
 
-let loanDurationMonths = loanDurationYears * 12;
-
-function calculatePaymentMonthly(amount, apr, durationMonths) {
-  let rateMonthly = apr / 12;
-  return (
-    amount * (rateMonthly / (1 - Math.pow(1 + rateMonthly, -durationMonths)))
-  );
-}
 let loanPaymentMonthly = calculatePaymentMonthly(
-  loanAmountUsd,
-  loanApr,
-  loanDurationMonths
+  loanInfo.principal,
+  loanInfo.annualPercentageRate / 12,
+  loanInfo.duration.years * 12 + loanInfo.duration.months
 );
 
 prompt(`Your monthly payment will be: $${loanPaymentMonthly.toFixed(2)}`);
