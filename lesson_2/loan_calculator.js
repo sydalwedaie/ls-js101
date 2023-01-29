@@ -72,8 +72,13 @@ while (true) {
   else prompt("Invalid entry.");
 }
 
-prompt("Please enter the APR in percentage points:");
-loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
+while (true) {
+  prompt("Please enter the APR in percentage points:");
+  loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
+  if (loanInfo.annualPercentageRate || loanInfo.annualPercentageRate === 0) {
+    break;
+  } else prompt("Invalid entry.");
+}
 
 prompt(
   "Please enter the loan duration\n   (acceptable formats: 3.5y, 2y1m, 20m):"
