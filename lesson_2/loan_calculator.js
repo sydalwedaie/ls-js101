@@ -49,6 +49,20 @@ function calculatePaymentMonthly(
   );
 }
 
+function parseDuration(string) {
+  let years = 0;
+  let months = 0;
+  if (string.includes("y") && string.includes("m")) {
+    years = string.split(/[a-z]/)[0];
+    months = string.split(/[a-z]/)[1];
+  } else if (string.includes("y")) {
+    years = string.split(/[a-z]/)[0];
+  } else if (string.includes("m")) {
+    months = string.split(/[a-z]/)[0];
+  }
+  return { years: parseFloat(years), months: parseFloat(months) };
+}
+
 prompt("Welcome to Loan Calculator!\n");
 
 prompt("Please enter the loan amount in USD:");
@@ -58,7 +72,7 @@ prompt("Please enter the APR in percentage points:");
 loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
 
 prompt("please enter the loan duration in years:");
-loanInfo.duration.years = parseFloat(rlSync.prompt());
+loanInfo.duration = parseDuration(rlSync.prompt());
 
 let loanPaymentMonthly = calculatePaymentMonthly(
   loanInfo.principal,
