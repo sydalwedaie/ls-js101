@@ -65,14 +65,18 @@ function parseDuration(string) {
 
 prompt("Welcome to Loan Calculator!\n");
 
-prompt("Please enter the loan amount in USD:");
-loanInfo.principal = parseFloat(rlSync.prompt());
+while (true) {
+  prompt("Please enter the loan amount in USD:");
+  loanInfo.principal = parseFloat(rlSync.prompt());
+  if (loanInfo.principal) break;
+  else prompt("Invalid entry.");
+}
 
 prompt("Please enter the APR in percentage points:");
 loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
 
 prompt(
-  "please enter the loan duration\n   (acceptable formats: 3.5y, 2y1m, 20m):"
+  "Please enter the loan duration\n   (acceptable formats: 3.5y, 2y1m, 20m):"
 );
 loanInfo.duration = parseDuration(rlSync.prompt());
 
