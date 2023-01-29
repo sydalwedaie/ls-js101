@@ -52,13 +52,13 @@ function calculatePaymentMonthly(
 function parseDuration(string) {
   let years = 0;
   let months = 0;
+  let splitString = string.split(/[a-z]/);
   if (string.includes("y") && string.includes("m")) {
-    years = string.split(/[a-z]/)[0];
-    months = string.split(/[a-z]/)[1];
+    [years, months] = splitString;
   } else if (string.includes("y")) {
-    years = string.split(/[a-z]/)[0];
+    years = splitString[0];
   } else if (string.includes("m")) {
-    months = string.split(/[a-z]/)[0];
+    months = splitString[0];
   }
   return { years: parseFloat(years), months: parseFloat(months) };
 }
@@ -71,7 +71,9 @@ loanInfo.principal = parseFloat(rlSync.prompt());
 prompt("Please enter the APR in percentage points:");
 loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
 
-prompt("please enter the loan duration in years:");
+prompt(
+  "please enter the loan duration\n   (acceptable formats: 3.5y, 2y1m, 20m):"
+);
 loanInfo.duration = parseDuration(rlSync.prompt());
 
 let loanPaymentMonthly = calculatePaymentMonthly(
