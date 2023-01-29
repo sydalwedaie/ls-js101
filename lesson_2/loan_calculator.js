@@ -49,20 +49,6 @@ function calculatePaymentMonthly(
   );
 }
 
-function parseDuration(string) {
-  let years = 0;
-  let months = 0;
-  let splitString = string.split(/[a-z]/);
-  if (string.includes("y") && string.includes("m")) {
-    [years, months] = splitString;
-  } else if (string.includes("y")) {
-    years = splitString[0];
-  } else if (string.includes("m")) {
-    months = splitString[0];
-  }
-  return { years: parseFloat(years), months: parseFloat(months) };
-}
-
 prompt("Welcome to Loan Calculator!\n");
 
 while (true) {
@@ -80,10 +66,11 @@ while (true) {
   } else prompt("Invalid entry.");
 }
 
-prompt(
-  "Please enter the loan duration\n   (acceptable formats: 3.5y, 2y1m, 20m):"
-);
-loanInfo.duration = parseDuration(rlSync.prompt());
+prompt("Please enter the loan duration");
+prompt("Enter the number of years (whole numbers):");
+loanInfo.duration.years = parseFloat(rlSync.prompt());
+prompt("Enter the number of months (whole numbers):");
+loanInfo.duration.months = parseFloat(rlSync.prompt());
 
 let loanPaymentMonthly = calculatePaymentMonthly(
   loanInfo.principal,
