@@ -27,12 +27,8 @@ const rlSync = require("readline-sync");
 let loanInfo = {
   principal: 0,
   annualRate: 0,
-  duration: {
-    years: 0,
-    months: 0,
-  },
+  durationMonths: 0,
   monthlyPayment: 0,
-  paymentsCount: 0,
   totalPayment: 0,
   totalInterest: 0,
 };
@@ -68,35 +64,33 @@ prompt("Please enter the loan duration");
 
 while (true) {
   prompt("Enter the number of years (whole numbers):");
-  loanInfo.duration.years = parseFloat(rlSync.prompt());
-  if (loanInfo.duration.years || loanInfo.duration.years === 0) {
+  loanInfo.durationMonths += parseFloat(rlSync.prompt()) * 12;
+  if (loanInfo.durationMonths || loanInfo.durationMonths === 0) {
     break;
   } else prompt("Invalid entry.");
 }
 
 while (true) {
   prompt("Enter the number of months (whole numbers):");
-  loanInfo.duration.months = parseFloat(rlSync.prompt());
-  if (loanInfo.duration.months || loanInfo.duration.months === 0) break;
+  loanInfo.durationMonths += parseFloat(rlSync.prompt());
+  if (loanInfo.durationMonths || loanInfo.durationMonths === 0) break;
   else prompt("Invalid entry.");
 }
 
 loanInfo.monthlyPayment = computeMonthlyPayment(
   loanInfo.principal,
   loanInfo.annualRate / 12,
-  loanInfo.duration.years * 12 + loanInfo.duration.months
+  loanInfo.durationMonths
 );
 
-loanInfo.paymentsCount =
-  loanInfo.duration.years * 12 + loanInfo.duration.months;
-loanInfo.totalPayment = loanInfo.paymentsCount * loanInfo.monthlyPayment;
+loanInfo.totalPayment = loanInfo.durationMonths * loanInfo.monthlyPayment;
 loanInfo.totalInterest = loanInfo.totalPayment - loanInfo.principal;
 
 prompt("Results");
 prompt(`Payment Every Month: $${loanInfo.monthlyPayment.toFixed(2)}`);
 prompt(
   `Total of ${
-    loanInfo.paymentsCount
+    loanInfo.durationMonths
   } Payments: $${loanInfo.totalPayment.toFixed(2)}`
 );
 prompt(`Total Interest: $${loanInfo.totalInterest.toFixed(2)}`);
