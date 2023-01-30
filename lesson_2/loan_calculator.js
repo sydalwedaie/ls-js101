@@ -69,7 +69,7 @@ prompt("Please enter the loan duration");
 
 while (true) {
   prompt("Enter the number of years (whole numbers):");
-  durationMonths += parseFloat(rlSync.prompt()) * 12;
+  durationMonths = parseFloat(rlSync.prompt()) * 12;
   if (durationMonths || durationMonths === 0) {
     break;
   } else prompt("Invalid entry.");
@@ -77,9 +77,11 @@ while (true) {
 
 while (true) {
   prompt("Enter the number of months (whole numbers):");
-  durationMonths += parseFloat(rlSync.prompt());
-  if (durationMonths) break;
-  else if (durationMonths === 0) {
+  let input = parseFloat(rlSync.prompt());
+  if (input) {
+    durationMonths += input;
+    break;
+  } else if (durationMonths === 0) {
     prompt("The duration must be at least 1 month.");
   } else prompt("Invalid entry.");
 }
