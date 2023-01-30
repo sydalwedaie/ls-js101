@@ -27,31 +27,30 @@ function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
 prompt("Welcome to Loan Calculator!\n   ---------------------------");
 
 while (true) {
+  prompt("Please enter the loan amount greater than 0 in USD:");
   while (true) {
-    prompt("Please enter the loan amount greater than 0 in USD:");
     principal = parseFloat(rlSync.prompt());
-    if (principal) break;
+    if (principal && principal > 0) break;
     else prompt("Invalid entry.");
   }
 
+  prompt("Please enter the APR in percentage points:");
   while (true) {
-    prompt("Please enter the APR in percentage points:");
     monthlyRate = parseFloat(rlSync.prompt()) / 1200;
     if (monthlyRate || monthlyRate === 0) break;
     else prompt("Invalid entry.");
   }
 
   prompt("Please enter the loan duration");
-
+  prompt("Enter the number of years (whole numbers):");
   while (true) {
-    prompt("Enter the number of years (whole numbers):");
     durationMonths = parseFloat(rlSync.prompt()) * 12;
     if (durationMonths || durationMonths === 0) break;
     else prompt("Invalid entry.");
   }
 
+  prompt("Enter the number of months (whole numbers):");
   while (true) {
-    prompt("Enter the number of months (whole numbers):");
     let input = parseFloat(rlSync.prompt());
     if (durationMonths === 0 && input === 0) {
       prompt("The duration must be at least 1 month.");
