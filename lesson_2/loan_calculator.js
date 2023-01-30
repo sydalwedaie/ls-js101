@@ -38,10 +38,16 @@ function prompt(message) {
 }
 
 function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
-  if (monthlyRate === 0) return principal / durationMonths;
-  return (
-    principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
-  );
+  if (monthlyRate === 0) {
+    return principal / durationMonths;
+  } else if (durationMonths === 0) {
+    return principal;
+  } else {
+    return (
+      principal *
+      (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
+    );
+  }
 }
 
 prompt("Welcome to Loan Calculator!\n");
@@ -74,8 +80,10 @@ while (true) {
 while (true) {
   prompt("Enter the number of months (whole numbers):");
   loanInfo.durationMonths += parseFloat(rlSync.prompt());
-  if (loanInfo.durationMonths || loanInfo.durationMonths === 0) break;
-  else prompt("Invalid entry.");
+  if (loanInfo.durationMonths) break;
+  else if (loanInfo.durationMonths === 0) {
+    prompt("The duration must be at least 1 month.");
+  } else prompt("Invalid entry.");
 }
 
 loanInfo.monthlyPayment = computeMonthlyPayment(
