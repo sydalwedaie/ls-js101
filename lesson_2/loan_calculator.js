@@ -26,7 +26,7 @@ const rlSync = require("readline-sync");
 
 let loanInfo = {
   principal: 0,
-  annualPercentageRate: 0,
+  annualRate: 0,
   duration: {
     years: 0,
     months: 0,
@@ -41,15 +41,9 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-function calculatePaymentMonthly(
-  principal,
-  monthlyPercentageRate,
-  durationMonths
-) {
+function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
   return (
-    principal *
-    (monthlyPercentageRate /
-      (1 - Math.pow(1 + monthlyPercentageRate, -durationMonths)))
+    principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
   );
 }
 
@@ -64,8 +58,8 @@ while (true) {
 
 while (true) {
   prompt("Please enter the APR in percentage points:");
-  loanInfo.annualPercentageRate = parseFloat(rlSync.prompt()) / 100;
-  if (loanInfo.annualPercentageRate || loanInfo.annualPercentageRate === 0) {
+  loanInfo.annualRate = parseFloat(rlSync.prompt()) / 100;
+  if (loanInfo.annualRate || loanInfo.annualRate === 0) {
     break;
   } else prompt("Invalid entry.");
 }
@@ -87,9 +81,9 @@ while (true) {
   else prompt("Invalid entry.");
 }
 
-loanInfo.monthlyPayment = calculatePaymentMonthly(
+loanInfo.monthlyPayment = computeMonthlyPayment(
   loanInfo.principal,
-  loanInfo.annualPercentageRate / 12,
+  loanInfo.annualRate / 12,
   loanInfo.duration.years * 12 + loanInfo.duration.months
 );
 
