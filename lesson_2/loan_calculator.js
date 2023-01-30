@@ -24,14 +24,12 @@ print output
 
 const rlSync = require("readline-sync");
 
-let loanInfo = {
-  principal: 0,
-  monthlyRate: 0,
-  durationMonths: 0,
-  monthlyPayment: 0,
-  totalPayment: 0,
-  totalInterest: 0,
-};
+let principal = 0;
+let monthlyRate = 0;
+let durationMonths = 0;
+let monthlyPayment = 0;
+let totalPayment = 0;
+let totalInterest = 0;
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -54,15 +52,15 @@ prompt("Welcome to Loan Calculator!\n");
 
 while (true) {
   prompt("Please enter the loan amount in USD:");
-  loanInfo.principal = parseFloat(rlSync.prompt());
-  if (loanInfo.principal) break;
+  principal = parseFloat(rlSync.prompt());
+  if (principal) break;
   else prompt("Invalid entry.");
 }
 
 while (true) {
   prompt("Please enter the APR in percentage points:");
-  loanInfo.monthlyRate = parseFloat(rlSync.prompt()) / 1200;
-  if (loanInfo.monthlyRate || loanInfo.monthlyRate === 0) {
+  monthlyRate = parseFloat(rlSync.prompt()) / 1200;
+  if (monthlyRate || monthlyRate === 0) {
     break;
   } else prompt("Invalid entry.");
 }
@@ -71,35 +69,27 @@ prompt("Please enter the loan duration");
 
 while (true) {
   prompt("Enter the number of years (whole numbers):");
-  loanInfo.durationMonths += parseFloat(rlSync.prompt()) * 12;
-  if (loanInfo.durationMonths || loanInfo.durationMonths === 0) {
+  durationMonths += parseFloat(rlSync.prompt()) * 12;
+  if (durationMonths || durationMonths === 0) {
     break;
   } else prompt("Invalid entry.");
 }
 
 while (true) {
   prompt("Enter the number of months (whole numbers):");
-  loanInfo.durationMonths += parseFloat(rlSync.prompt());
-  if (loanInfo.durationMonths) break;
-  else if (loanInfo.durationMonths === 0) {
+  durationMonths += parseFloat(rlSync.prompt());
+  if (durationMonths) break;
+  else if (durationMonths === 0) {
     prompt("The duration must be at least 1 month.");
   } else prompt("Invalid entry.");
 }
 
-loanInfo.monthlyPayment = computeMonthlyPayment(
-  loanInfo.principal,
-  loanInfo.monthlyRate,
-  loanInfo.durationMonths
-);
+monthlyPayment = computeMonthlyPayment(principal, monthlyRate, durationMonths);
 
-loanInfo.totalPayment = loanInfo.durationMonths * loanInfo.monthlyPayment;
-loanInfo.totalInterest = loanInfo.totalPayment - loanInfo.principal;
+totalPayment = durationMonths * monthlyPayment;
+totalInterest = totalPayment - principal;
 
 prompt("Results");
-prompt(`Payment Every Month: $${loanInfo.monthlyPayment.toFixed(2)}`);
-prompt(
-  `Total of ${
-    loanInfo.durationMonths
-  } Payments: $${loanInfo.totalPayment.toFixed(2)}`
-);
-prompt(`Total Interest: $${loanInfo.totalInterest.toFixed(2)}`);
+prompt(`Payment Every Month: $${monthlyPayment.toFixed(2)}`);
+prompt(`Total of ${durationMonths} Payments: $${totalPayment.toFixed(2)}`);
+prompt(`Total Interest: $${totalInterest.toFixed(2)}`);
