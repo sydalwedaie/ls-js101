@@ -38,6 +38,7 @@ function prompt(message) {
 }
 
 function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
+  if (monthlyRate === 0) return principal / durationMonths;
   return (
     principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
   );
