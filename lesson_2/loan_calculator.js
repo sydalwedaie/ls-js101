@@ -11,6 +11,20 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
+function isInvalidInput(input) {
+  return input.trim === "" || input < 0 || Number.isNaN(parseFloat(input));
+}
+
+function getInput(promptMessage) {
+  prompt(promptMessage);
+  let input = parseFloat(rlSync.prompt());
+  while (isInvalidInput(input)) {
+    prompt("Invalid entry.");
+    input = parseFloat(rlSync.prompt());
+  }
+  return input;
+}
+
 function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
   if (monthlyRate === 0) {
     return principal / durationMonths;
@@ -27,12 +41,7 @@ function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
 prompt("Welcome to Loan Calculator!\n   ---------------------------");
 
 while (true) {
-  prompt("Please enter the loan amount greater than 0 in USD:");
-  while (true) {
-    principal = parseFloat(rlSync.prompt());
-    if (principal && principal > 0) break;
-    else prompt("Invalid entry.");
-  }
+  principal = getInput("Please enter the loan amount greater than 0 in USD:");
 
   prompt("Please enter the APR in percentage points:");
   while (true) {
