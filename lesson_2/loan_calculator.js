@@ -21,9 +21,9 @@ let loan = {
 let messages = {
   welcom: "Welcome to Loan Calculator!",
   enterAmount: "Please enter the loan amount in USD:",
-  exampleAmount: "Example: 10000 means $10,000",
+  exampleAmount: "Example: Type 10000 for $10,000",
   enterRate: "Please enter the APR in percentage points:",
-  exampleRate: "Example: 4.2 means 4.2%",
+  exampleRate: "Example: Type 4.2 for 4.2%",
   specifyDuration: "Please specify the loan duration:",
   enterYears: "Enter the number of years:",
   exampleYears: "Example: 4 or 6.5. Enter 0 to specify term in months only.",
@@ -36,6 +36,7 @@ let messages = {
   displayTotalInterest: interest => `Total Interest: $${interest}\n`,
   newCalc: "Enter 'y' to start another calculation",
   exit: "Enter any other character to exit.",
+  bye: "Thank you for using the Loan Calculator!",
   invalid: "Invalid entry.",
 };
 
@@ -45,7 +46,12 @@ function prompt(line1, line2) {
 }
 
 function isInvalidInput(input) {
-  return input.trim === "" || input < 0 || Number.isNaN(parseFloat(input));
+  return (
+    input.trim === "" ||
+    input < 0 ||
+    input === Infinity ||
+    Number.isNaN(parseFloat(input))
+  );
 }
 
 function getInput(message1, message2) {
@@ -81,7 +87,10 @@ function displayResults() {
 
 function newCalc() {
   prompt(messages.newCalc, messages.exit);
-  if (rlSync.prompt().toLowerCase()[0] !== "y") return false;
+  if (rlSync.prompt().toLowerCase()[0] !== "y") {
+    prompt(messages.bye);
+    return false;
+  }
   console.clear();
   return true;
 }
