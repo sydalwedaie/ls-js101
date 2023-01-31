@@ -26,16 +26,12 @@ function getInput(promptMessage) {
 }
 
 function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
-  if (monthlyRate === 0) {
-    return principal / durationMonths;
-  } else if (durationMonths === 0) {
-    return principal;
-  } else {
-    return (
-      principal *
-      (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
-    );
-  }
+  if (monthlyRate === 0) return principal / durationMonths;
+  if (durationMonths === 0) return principal;
+
+  return (
+    principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
+  );
 }
 
 function newCalc() {
