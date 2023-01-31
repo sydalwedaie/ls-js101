@@ -38,9 +38,17 @@ function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
   }
 }
 
+function newCalc() {
+  prompt(
+    "Enter 'y' to start another calculation\n   Enter any other character to exit."
+  );
+  let answer = rlSync.prompt().toLowerCase();
+  return answer[0] === "y";
+}
+
 prompt("Welcome to Loan Calculator!\n   ---------------------------");
 
-while (true) {
+do {
   principal = getInput("Please enter the loan amount greater than 0 in USD:");
   monthlyRate = getInput("Please enter the APR in percentage points:") / 1200;
 
@@ -61,12 +69,4 @@ while (true) {
   prompt(`Payment Every Month: $${monthlyPayment.toFixed(2)}`);
   prompt(`Total of ${durationMonths} Payments: $${totalPayment.toFixed(2)}`);
   prompt(`Total Interest: $${totalInterest.toFixed(2)}\n`);
-
-  prompt("Start a new calculation?");
-  let answer = rlSync.prompt().toLowerCase();
-  while (!["y", "n"].includes(answer[0])) {
-    prompt("Please enter 'y' or 'n'.");
-    answer = rlSync.prompt().toLowerCase();
-  }
-  if (answer[0] === "n") break;
-}
+} while (newCalc());
