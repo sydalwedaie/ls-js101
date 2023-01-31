@@ -1,11 +1,22 @@
 const rlSync = require("readline-sync");
 
-let principal = 0;
-let monthlyRate = 0;
-let durationMonths = 0;
-let monthlyPayment = 0;
-let totalPayment = 0;
-let totalInterest = 0;
+let loan = {
+  principal: 0,
+  monthlyRate: 0,
+  durationMonths: 0,
+  monthlyPayment: 0,
+  totalPayment: 0,
+  totalInterest: 0,
+  computeLoan: function () {
+    this.monthlyPayment = computeMonthlyPayment(
+      this.principal,
+      this.monthlyRate,
+      this.durationMonths
+    );
+    this.totalPayment = this.durationMonths * this.monthlyPayment;
+    this.totalInterest = this.totalPayment - this.principal;
+  },
+};
 
 let messages = {
   welcom: "Welcome to Loan Calculator!",
@@ -19,9 +30,10 @@ let messages = {
   enterMonths: "Enter the number of months:",
   exampleMonths: "Example: 3 or 84 (equivalent to 7 years.)",
   results: "Results",
-  monthlyPayment: amount => `Payment Every Month: $${amount}`,
-  totalPayment: (count, payment) => `Total of ${count} Payments: $${payment}`,
-  totalInterest: interest => `Total Interest: $${interest}\n`,
+  displayMonthlyPayment: amount => `Payment Every Month: $${amount}`,
+  displayTotalPayment: (count, payment) =>
+    `Total of ${count} Payments: $${payment}`,
+  displayTotalInterest: interest => `Total Interest: $${interest}\n`,
   newCalc: "Enter 'y' to start another calculation",
   exit: "Enter any other character to exit.",
   invalid: "Invalid entry.",
@@ -47,8 +59,8 @@ function getInput(message1, message2) {
 }
 
 function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
-  if (monthlyRate === 0) return principal / durationMonths;
   if (durationMonths === 0) return principal;
+  if (monthlyRate === 0) return principal / durationMonths;
 
   return (
     principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
@@ -57,11 +69,14 @@ function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
 
 function displayResults() {
   prompt(messages.results, "-------");
-  prompt(messages.monthlyPayment(monthlyPayment.toFixed(2)));
+  prompt(messages.displayMonthlyPayment(loan.monthlyPayment.toFixed(2)));
   prompt(
-    messages.totalPayment(durationMonths.toFixed(2), totalPayment.toFixed(2))
+    messages.displayTotalPayment(
+      loan.durationMonths.toFixed(2),
+      loan.totalPayment.toFixed(2)
+    )
   );
-  prompt(messages.totalInterest(totalInterest.toFixed(2)));
+  prompt(messages.displayTotalInterest(loan.totalInterest.toFixed(2)));
 }
 
 function newCalc() {
@@ -75,21 +90,14 @@ console.clear();
 prompt(messages.welcom, "---------------------------");
 
 do {
-  principal = getInput(messages.enterAmount, messages.exampleAmount);
-  monthlyRate = getInput(messages.enterRate, messages.exampleRate) / 1200;
+  loan.principal = getInput(messages.enterAmount, messages.exampleAmount);
+  loan.monthlyRate = getInput(messages.enterRate, messages.exampleRate) / 1200;
 
   prompt(messages.specifyDuration);
-  durationMonths = getInput(messages.enterYears, messages.exampleYears) * 12;
-  durationMonths += getInput(messages.enterMonths, messages.exampleMonths);
+  loan.durationMonths =
+    getInput(messages.enterYears, messages.exampleYears) * 12;
+  loan.durationMonths += getInput(messages.enterMonths, messages.exampleMonths);
 
-  monthlyPayment = computeMonthlyPayment(
-    principal,
-    monthlyRate,
-    durationMonths
-  );
-
-  totalPayment = durationMonths * monthlyPayment;
-  totalInterest = totalPayment - principal;
-
+  loan.computeLoan();
   displayResults();
 } while (newCalc());
