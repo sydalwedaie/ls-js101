@@ -38,10 +38,12 @@ function newCalc() {
   prompt(
     "Enter 'y' to start another calculation\n   Enter any other character to exit."
   );
-  let answer = rlSync.prompt().toLowerCase();
-  return answer[0] === "y";
+  if (rlSync.prompt().toLowerCase()[0] !== "y") return false;
+  console.clear();
+  return true;
 }
 
+console.clear();
 prompt("Welcome to Loan Calculator!\n   ---------------------------");
 
 do {
