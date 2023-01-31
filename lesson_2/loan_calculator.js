@@ -29,6 +29,7 @@ let messages = {
   exampleYears: "Example: 4 or 6.5. Enter 0 to specify term in months only.",
   enterMonths: "Enter the number of months:",
   exampleMonths: "Example: 3 or 84 (equivalent to 7 years.)",
+  zeroDuration: "Duration must be more than zero.",
   results: "Results",
   displayMonthlyPayment: amount => `Payment Every Month: $${amount}`,
   displayTotalPayment: (count, payment) =>
@@ -103,9 +104,15 @@ do {
   loan.monthlyRate = getInput(messages.enterRate, messages.exampleRate) / 1200;
 
   prompt(messages.specifyDuration);
-  loan.durationMonths =
-    getInput(messages.enterYears, messages.exampleYears) * 12;
-  loan.durationMonths += getInput(messages.enterMonths, messages.exampleMonths);
+  do {
+    loan.durationMonths =
+      getInput(messages.enterYears, messages.exampleYears) * 12;
+    loan.durationMonths += getInput(
+      messages.enterMonths,
+      messages.exampleMonths
+    );
+    if (loan.durationMonths === 0) prompt(messages.zeroDuration);
+  } while (loan.durationMonths === 0);
 
   loan.computeLoan();
   displayResults();
