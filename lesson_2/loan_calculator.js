@@ -31,14 +31,14 @@ let messages = {
   exampleMonths: "Example: 3 or 84 (equivalent to 7 years.)",
   zeroDuration: "Duration must be more than zero.",
   results: "Results",
-  displayMonthlyPayment: amount => `Payment Every Month: $${amount}`,
-  displayTotalPayment: (count, payment) =>
-    `Total of ${count} Payments: $${payment}`,
-  displayTotalInterest: interest => `Total Interest: $${interest}\n`,
   newCalc: "Enter 'y' to start another calculation",
   exit: "Enter any other character to exit.",
   bye: "Thank you for using the Loan Calculator!",
   invalid: "Invalid entry.",
+  displayMonthlyPayment: amount => `Payment Every Month: $${amount}`,
+  displayTotalPayment: (count, payment) =>
+    `Total of ${count} Payments: $${payment}`,
+  displayTotalInterest: interest => `Total Interest: $${interest}\n`,
 };
 
 function prompt(line1, line2) {
