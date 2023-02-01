@@ -8,11 +8,7 @@ let loan = {
   totalPayment: 0,
   totalInterest: 0,
   computeLoan: function () {
-    this.monthlyPayment = computeMonthlyPayment(
-      this.principal,
-      this.monthlyRate,
-      this.durationMonths
-    );
+    this.monthlyPayment = computeMonthlyPayment(this);
     this.totalPayment = this.durationMonths * this.monthlyPayment;
     this.totalInterest = this.totalPayment - this.principal;
   },
@@ -36,9 +32,9 @@ let messages = {
   bye: "Thank you for using the Loan Calculator!",
   invalid: "Invalid entry.",
   displayMonthlyPayment: amount => `Payment Every Month: $${amount}`,
+  displayTotalInterest: interest => `Total Interest: $${interest}\n`,
   displayTotalPayment: (count, payment) =>
     `Total of ${count} Payments: $${payment}`,
-  displayTotalInterest: interest => `Total Interest: $${interest}\n`,
 };
 
 function prompt(line1, line2) {
@@ -65,7 +61,8 @@ function getInput(message1, message2) {
   return input;
 }
 
-function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
+function computeMonthlyPayment(loan) {
+  const { principal, monthlyRate, durationMonths } = loan;
   if (durationMonths === 0) return principal;
   if (monthlyRate === 0) return principal / durationMonths;
 
@@ -74,16 +71,20 @@ function computeMonthlyPayment(principal, monthlyRate, durationMonths) {
   );
 }
 
-function displayResults() {
-  prompt(messages.results, "-------");
-  prompt(messages.displayMonthlyPayment(loan.monthlyPayment.toFixed(2)));
+function displayResults(loan, messages) {
+  const {
+    results,
+    displayMonthlyPayment,
+    displayTotalPayment,
+    displayTotalInterest,
+  } = messages;
+  const { monthlyPayment, durationMonths, totalPayment } = loan;
+  prompt(results, "-------");
+  prompt(displayMonthlyPayment(monthlyPayment.toFixed(2)));
   prompt(
-    messages.displayTotalPayment(
-      loan.durationMonths.toFixed(2),
-      loan.totalPayment.toFixed(2)
-    )
+    displayTotalPayment(durationMonths.toFixed(2), totalPayment.toFixed(2))
   );
-  prompt(messages.displayTotalInterest(loan.totalInterest.toFixed(2)));
+  prompt(displayTotalInterest(loan.totalInterest.toFixed(2)));
 }
 
 function newCalc() {
@@ -115,5 +116,5 @@ do {
   } while (loan.durationMonths === 0);
 
   loan.computeLoan();
-  displayResults();
+  displayResults(loan, messages);
 } while (newCalc());
