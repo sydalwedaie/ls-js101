@@ -42,19 +42,19 @@ function prompt(line1, line2) {
   console.log(`=> ${line1}${line2}`);
 }
 
-function isInvalidInput(input) {
-  return (
-    input.trim === "" ||
-    input < 0 ||
-    input === Infinity ||
-    Number.isNaN(parseFloat(input))
-  );
+function isInvalidInput(input, preventNegative, preventZero) {
+  let invalidNumber =
+    input.trim === "" || input === Infinity || Number.isNaN(parseFloat(input));
+  let isNegative = preventNegative ? input < 0 : false;
+  let isZero = preventZero ? input === 0 : false;
+
+  return invalidNumber || isNegative || isZero;
 }
 
-function getInput(message1, message2) {
+function getInput(preventNegative, preventZero, message1, message2) {
   prompt(message1, message2);
   let input = parseFloat(rlSync.prompt());
-  while (isInvalidInput(input)) {
+  while (isInvalidInput(input, preventNegative, preventZero)) {
     prompt(messages.invalid);
     input = parseFloat(rlSync.prompt());
   }
@@ -87,7 +87,7 @@ function displayResults(loan, messages) {
   prompt(displayTotalInterest(loan.totalInterest.toFixed(2)));
 }
 
-function newCalc() {
+function newCalc(messages) {
   prompt(messages.newCalc, messages.exit);
   if (rlSync.prompt().toLowerCase()[0] !== "y") {
     prompt(messages.bye);
@@ -101,14 +101,22 @@ console.clear();
 prompt(messages.welcom, "---------------------------");
 
 do {
-  loan.principal = getInput(messages.enterAmount, messages.exampleAmount);
-  loan.monthlyRate = getInput(messages.enterRate, messages.exampleRate) / 1200;
+  loan.principal = getInput(
+    true,
+    true,
+    messages.enterAmount,
+    messages.exampleAmount
+  );
+  loan.monthlyRate =
+    getInput(false, false, messages.enterRate, messages.exampleRate) / 1200;
 
   prompt(messages.specifyDuration);
   do {
     loan.durationMonths =
-      getInput(messages.enterYears, messages.exampleYears) * 12;
+      getInput(true, false, messages.enterYears, messages.exampleYears) * 12;
     loan.durationMonths += getInput(
+      true,
+      false,
       messages.enterMonths,
       messages.exampleMonths
     );
@@ -117,4 +125,4 @@ do {
 
   loan.computeLoan();
   displayResults(loan, messages);
-} while (newCalc());
+} while (newCalc(messages));
