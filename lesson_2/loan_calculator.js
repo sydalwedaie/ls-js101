@@ -17,9 +17,11 @@ let loan = {
 let messages = {
   welcom: "Welcome to Loan Calculator!",
   enterAmount: "Please enter the loan amount in USD:",
-  exampleAmount: "Example: Type 10000 for $10,000",
+  exampleAmount:
+    "Example: Type 10000 for $10,000. Zero and negative amounts are not allowed",
   enterRate: "Please enter the APR in percentage points:",
-  exampleRate: "Example: Type 4.2 for 4.2%",
+  exampleRate:
+    "Example: Type 4.2 for 4.2%. Zero and negative rates are allowed.",
   specifyDuration: "Please specify the loan duration:",
   enterYears: "Enter the number of years:",
   exampleYears: "Example: 4 or 6.5. Enter 0 to specify term in months only.",
@@ -43,12 +45,12 @@ function prompt(line1, line2) {
 }
 
 function isInvalidInput(input, preventNegative, preventZero) {
-  let invalidNumber =
+  let isInvalidNumber =
     input.trim === "" || input === Infinity || Number.isNaN(parseFloat(input));
   let isNegative = preventNegative ? input < 0 : false;
   let isZero = preventZero ? input === 0 : false;
 
-  return invalidNumber || isNegative || isZero;
+  return isInvalidNumber || isNegative || isZero;
 }
 
 function getInput(preventNegative, preventZero, message1, message2) {
@@ -65,7 +67,6 @@ function computeMonthlyPayment(loan) {
   const { principal, monthlyRate, durationMonths } = loan;
   if (durationMonths === 0) return principal;
   if (monthlyRate === 0) return principal / durationMonths;
-
   return (
     principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -durationMonths)))
   );
