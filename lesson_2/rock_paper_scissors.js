@@ -1,6 +1,13 @@
 const readline = require("readline-sync");
 const VALID_CHOICES = ["rock", "paper", "scissors"];
 
+// keys are set to an array of choices they can beat
+const RULES = {
+  rock: ["scissors"],
+  paper: ["rock"],
+  scissors: ["paper"],
+};
+
 function prompt(message) {
   console.log(`=> ${message}`);
 }
@@ -17,17 +24,9 @@ function getUserChoice() {
 }
 
 function displayWinner(playerA, playerB) {
-  if (
-    (playerA === VALID_CHOICES[0] && playerB === VALID_CHOICES[2]) ||
-    (playerA === VALID_CHOICES[1] && playerB === VALID_CHOICES[0]) ||
-    (playerA === VALID_CHOICES[2] && playerB === VALID_CHOICES[1])
-  ) {
+  if (RULES[playerA].includes(playerB)) {
     prompt("You win!");
-  } else if (
-    (playerA === VALID_CHOICES[2] && playerB === VALID_CHOICES[0]) ||
-    (playerA === VALID_CHOICES[0] && playerB === VALID_CHOICES[1]) ||
-    (playerA === VALID_CHOICES[1] && playerB === VALID_CHOICES[2])
-  ) {
+  } else if (RULES[playerB].includes(playerA)) {
     prompt("Computer wins!");
   } else {
     prompt("It's a tie!");
