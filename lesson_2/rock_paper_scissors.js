@@ -10,6 +10,10 @@ const RULES = {
   spock: ["rock", "scissors"],
 };
 
+let roundNumber = 0;
+let userScore = 0;
+let computerScore = 0;
+
 function prompt(message) {
   console.log(`=> ${message}`);
 }
@@ -49,9 +53,12 @@ function getFullName(abbrevation) {
 }
 
 function displayWinner(playerA, playerB) {
+  roundNumber += 1;
   if (RULES[playerA].includes(playerB)) {
+    userScore += 1;
     prompt("You win!");
   } else if (RULES[playerB].includes(playerA)) {
+    computerScore += 1;
     prompt("Computer wins!");
   } else {
     prompt("It's a tie!");
@@ -74,6 +81,7 @@ function newGame() {
 
 do {
   console.clear();
+  prompt(`Round Number: ${roundNumber}`);
   let userChoice = getUserChoice();
 
   let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
@@ -82,4 +90,14 @@ do {
   prompt(`You chose: ${userChoice}, computer chose: ${computerChoice}`);
 
   displayWinner(userChoice, computerChoice);
+  prompt(`Your score: ${userScore}`);
+  prompt(`Computer score: ${computerScore}`);
+
+  if (userScore === 3) {
+    prompt(`You beat the computer in ${roundNumber} rounds!`);
+    break;
+  } else if (computerScore === 3) {
+    prompt(`The computer beat you in ${roundNumber} rounds! Game Over!`);
+    break;
+  }
 } while (newGame());
