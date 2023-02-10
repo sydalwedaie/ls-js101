@@ -1,15 +1,3 @@
-/*
-
-If player a chooses rock and player b chooses scissors, player a wins.
-If player a chooses paper and player b chooses rock, player a wins.
-If player a chooses scissors and player b chooses paper, player a wins.
-If both players choose the same item, neither player wins. It's a tie.
-
-rock (0) > scissors (2)
-paper (1) > rock (0)
-scissors (2) > paper (1)
-*/
-
 const readline = require("readline-sync");
 const VALID_CHOICES = ["rock", "paper", "scissors"];
 
