@@ -1,11 +1,13 @@
 const readline = require("readline-sync");
-const VALID_CHOICES = ["rock", "paper", "scissors"];
+const VALID_CHOICES = ["rock", "paper", "scissors", "lizard", "spock"];
 
 // keys are set to an array of choices they can beat
 const RULES = {
-  rock: ["scissors"],
-  paper: ["rock"],
-  scissors: ["paper"],
+  rock: ["scissors", "lizard"],
+  paper: ["rock", "spock"],
+  scissors: ["paper", "lizard"],
+  lizard: ["paper", "spock"],
+  spock: ["rock", "scissors"],
 };
 
 function prompt(message) {
