@@ -10,7 +10,7 @@ const RULES = {
   spock: ["rock", "scissors"],
 };
 
-let roundNumber = 0;
+let roundNumber = 1;
 let userScore = 0;
 let computerScore = 0;
 
@@ -52,30 +52,47 @@ function getFullName(abbrevation) {
   }
 }
 
-function displayWinner(playerA, playerB) {
-  roundNumber += 1;
+function play(playerA, playerB) {
   if (RULES[playerA].includes(playerB)) {
     userScore += 1;
-    prompt("You win!");
   } else if (RULES[playerB].includes(playerA)) {
     computerScore += 1;
-    prompt("Computer wins!");
-  } else {
-    prompt("It's a tie!");
+  }
+}
+
+function displayResults(userScore, computerScore) {
+  if (userScore > computerScore) prompt("You win!");
+  else if (userScore < computerScore) prompt("Computer wins!");
+  else prompt("It's a tie!");
+
+  prompt(`Your score: ${userScore}`);
+  prompt(`Computer score: ${computerScore}`);
+}
+
+function displayEndGame(roundNumber, userScore, computerScore) {
+  if (userScore === 3) {
+    prompt(`You beat the computer in ${roundNumber} rounds!`);
+  } else if (computerScore === 3) {
+    prompt(`The computer beat you in ${roundNumber} rounds! Game Over!`);
   }
 }
 
 function newGame() {
+  roundNumber += 1;
+
   prompt("Another Game? y/n");
   let anotherGame = readline.question().trim().toLowerCase()[0];
+
   while (anotherGame !== "y" && anotherGame !== "n") {
     prompt("Please enter y or n");
     anotherGame = readline.question().trim().toLowerCase()[0];
   }
+
   if (anotherGame === "n") {
     prompt("Thank you for playing.");
     return false;
   }
+
   return true;
 }
 
@@ -89,15 +106,11 @@ do {
 
   prompt(`You chose: ${userChoice}, computer chose: ${computerChoice}`);
 
-  displayWinner(userChoice, computerChoice);
-  prompt(`Your score: ${userScore}`);
-  prompt(`Computer score: ${computerScore}`);
+  play(userChoice, computerChoice);
+  displayResults(userScore, computerScore);
 
-  if (userScore === 3) {
-    prompt(`You beat the computer in ${roundNumber} rounds!`);
-    break;
-  } else if (computerScore === 3) {
-    prompt(`The computer beat you in ${roundNumber} rounds! Game Over!`);
+  if (userScore === 3 || computerScore === 3) {
+    displayEndGame(roundNumber, userScore, computerScore);
     break;
   }
 } while (newGame());
