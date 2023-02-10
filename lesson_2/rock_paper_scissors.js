@@ -15,7 +15,11 @@ function prompt(message) {
 }
 
 function getUserChoice() {
-  prompt(`Choose one: ${VALID_CHOICES.join(", ")}`);
+  prompt(
+    `Choose one: ${VALID_CHOICES.join(
+      ", "
+    )}\n   (You can also enter the first two letters)`
+  );
   let input = readline.question();
   let userChoice = getFullName(input) || input;
 
