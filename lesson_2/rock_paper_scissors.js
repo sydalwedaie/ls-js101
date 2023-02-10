@@ -16,13 +16,32 @@ function prompt(message) {
 
 function getUserChoice() {
   prompt(`Choose one: ${VALID_CHOICES.join(", ")}`);
-  let userChoice = readline.question();
+  let input = readline.question();
+  let userChoice = getFullName(input) || input;
 
   while (!VALID_CHOICES.includes(userChoice)) {
     prompt("That's not a valid choice");
-    userChoice = readline.question();
+    input = readline.question();
+    userChoice = getFullName(input) || input;
   }
   return userChoice;
+}
+
+function getFullName(abbrevation) {
+  switch (abbrevation) {
+    case "ro":
+      return VALID_CHOICES[0];
+    case "pa":
+      return VALID_CHOICES[1];
+    case "sc":
+      return VALID_CHOICES[2];
+    case "li":
+      return VALID_CHOICES[3];
+    case "sp":
+      return VALID_CHOICES[4];
+    default:
+      return null;
+  }
 }
 
 function displayWinner(playerA, playerB) {
@@ -37,10 +56,10 @@ function displayWinner(playerA, playerB) {
 
 function newGame() {
   prompt("Another Game? y/n");
-  let anotherGame = readline.question().trim()[0].toLowerCase();
+  let anotherGame = readline.question().trim().toLowerCase()[0];
   while (anotherGame !== "y" && anotherGame !== "n") {
     prompt("Please enter y or n");
-    anotherGame = readline.question().trim()[0].toLowerCase();
+    anotherGame = readline.question().trim().toLowerCase()[0];
   }
   if (anotherGame === "n") {
     prompt("Thank you for playing.");
