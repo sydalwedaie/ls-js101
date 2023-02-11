@@ -32,6 +32,7 @@ const messages = {
 let roundNumber = 1;
 let userScore = 0;
 let computerScore = 0;
+let roundWinner = "";
 
 // HELPER FUNCTIONS
 function prompt(message) {
@@ -55,6 +56,22 @@ function clearLastLines(count) {
   process.stdout.clearScreenDown();
 }
 
+function getFullName(abbrevation) {
+  switch (abbrevation) {
+    case "ro":
+      return VALID_CHOICES[0];
+    case "pa":
+      return VALID_CHOICES[1];
+    case "sc":
+      return VALID_CHOICES[2];
+    case "li":
+      return VALID_CHOICES[3];
+    case "sp":
+      return VALID_CHOICES[4];
+    default:
+      return null;
+  }
+}
 // DISPLAY LOGIC
 function displayWelcom() {
   console.clear();
@@ -64,10 +81,12 @@ function displayWelcom() {
   prompt(messages.startPrompt);
 }
 
-function displayResults(userScore, computerScore) {
-  if (userScore > computerScore) promptResult(messages.userWins);
-  else if (userScore < computerScore) promptResult(messages.computerWins);
-  else promptResult(messages.tie);
+function displayResults(userChoice, computerChoice) {
+  if (playerWins(userChoice, computerChoice)) {
+    promptResult(messages.userWins);
+  } else if (userChoice === computerChoice) {
+    promptResult(messages.tie);
+  } else promptResult(messages.computerWins);
 }
 
 function displayEndGame(roundNumber, userScore, computerScore) {
@@ -105,28 +124,20 @@ function getUserChoice() {
   return userChoice;
 }
 
-function getFullName(abbrevation) {
-  switch (abbrevation) {
-    case "ro":
-      return VALID_CHOICES[0];
-    case "pa":
-      return VALID_CHOICES[1];
-    case "sc":
-      return VALID_CHOICES[2];
-    case "li":
-      return VALID_CHOICES[3];
-    case "sp":
-      return VALID_CHOICES[4];
-    default:
-      return null;
-  }
+function getComputerChoice() {
+  let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
+  return VALID_CHOICES[randomIndex];
 }
 
-function play(ChoicePlayerA, ChoicePlayerB) {
-  if (RULES[ChoicePlayerA].includes(ChoicePlayerB)) {
-    userScore += 1;
-  } else if (RULES[ChoicePlayerB].includes(ChoicePlayerA)) {
-    computerScore += 1;
+function playerWins(userChoice, computerChoice) {
+  return RULES[userChoice].includes(computerChoice);
+}
+
+function updateScoreboard(userChoice, computerChoice) {
+  if (playerWins(userChoice, computerChoice)) {
+    userScore++;
+  } else if (!(userChoice === computerChoice)) {
+    computerScore++;
   }
 }
 
@@ -156,12 +167,11 @@ function gameLoop() {
     displayScoreboard(roundNumber, userScore, computerScore);
 
     let userChoice = getUserChoice();
-    let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
-    let computerChoice = VALID_CHOICES[randomIndex];
+    let computerChoice = getComputerChoice();
 
     prompt(`You chose: ${userChoice}, computer chose: ${computerChoice}`);
-    play(userChoice, computerChoice);
-    displayResults(userScore, computerScore);
+    displayResults(userChoice, computerChoice);
+    updateScoreboard(userChoice, computerChoice);
 
     if (userScore === FINISHING_SCORE || computerScore === FINISHING_SCORE) {
       displayEndGame(roundNumber, userScore, computerScore);
