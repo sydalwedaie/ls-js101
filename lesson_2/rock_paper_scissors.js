@@ -12,7 +12,7 @@ const RULES = {
   spock: ["rock", "scissors"],
 };
 
-let messages = {
+const messages = {
   welcom: "Welcome to the RPS game, enhanced edition!",
   instructions:
     "This is similar to the classic RPS game with two extra objects: lizard and spock. Each object can beat two other objects. The rules are listed in the table below. The first palyer to win 3 times wins the game.",
@@ -122,15 +122,15 @@ function getFullName(abbrevation) {
   }
 }
 
-function play(playerA, playerB) {
-  if (RULES[playerA].includes(playerB)) {
+function play(ChoicePlayerA, ChoicePlayerB) {
+  if (RULES[ChoicePlayerA].includes(ChoicePlayerB)) {
     userScore += 1;
-  } else if (RULES[playerB].includes(playerA)) {
+  } else if (RULES[ChoicePlayerB].includes(ChoicePlayerA)) {
     computerScore += 1;
   }
 }
 
-function newGame() {
+function newRound() {
   roundNumber += 1;
 
   prompt(messages.playAgain);
@@ -156,12 +156,10 @@ function startGame() {
     displayScoreboard(roundNumber, userScore, computerScore);
 
     let userChoice = getUserChoice();
-
     let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
     let computerChoice = VALID_CHOICES[randomIndex];
 
     prompt(`You chose: ${userChoice}, computer chose: ${computerChoice}`);
-
     play(userChoice, computerChoice);
     displayResults(userScore, computerScore);
 
@@ -169,7 +167,7 @@ function startGame() {
       displayEndGame(roundNumber, userScore, computerScore);
       break;
     }
-  } while (newGame());
+  } while (newRound());
 }
 
 // RUN GAME
