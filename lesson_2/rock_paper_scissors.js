@@ -24,8 +24,8 @@ const messages = {
   userWins: "Wahooo! You win!",
   computerWins: "Gosh! Computer wins!",
   tie: "It's a tie!",
-  playAgain: "Play again? y/n",
-  playAgainError: "Invalid input. Please enter y or n",
+  playAgain: "Hit Enter to play again, or 'n' to exit:",
+  playAgainError: "Invalid input (Enter to play again, 'n' to exit.)",
   farewell: "Thank you for playing!",
 };
 
@@ -136,7 +136,7 @@ function newRound() {
   prompt(messages.playAgain);
   let playAgain = readline.question().trim().toLowerCase();
 
-  while (playAgain !== "y" && playAgain !== "n") {
+  while (playAgain !== "n" && playAgain !== "") {
     clearLastLines(2);
     promptError(messages.playAgainError);
     playAgain = readline.question().trim().toLowerCase();
@@ -150,7 +150,7 @@ function newRound() {
   return true;
 }
 
-function startGame() {
+function gameLoop() {
   do {
     console.clear();
     displayScoreboard(roundNumber, userScore, computerScore);
@@ -170,8 +170,11 @@ function startGame() {
   } while (newRound());
 }
 
-// RUN GAME
-displayWelcom();
+function startGame() {
+  displayWelcom();
+  let start = readline.question();
+  if (start || start.trim() === "") gameLoop();
+}
 
-let start = readline.question();
-if (start || start.trim() === "") startGame();
+// RUN GAME
+startGame();
