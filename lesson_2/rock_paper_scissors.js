@@ -29,10 +29,11 @@ const messages = {
   farewell: "Thank you for playing!",
 };
 
-let roundNumber = 1;
-let userScore = 0;
-let computerScore = 0;
-let roundWinner = "";
+const gameState = {
+  roundNumber: 1,
+  userScore: 0,
+  computerScore: 0,
+};
 
 // HELPER FUNCTIONS
 function prompt(message) {
@@ -89,9 +90,10 @@ function displayResults(userChoice, computerChoice) {
   } else promptResult(messages.computerWins);
 }
 
-function displayEndGame(roundNumber, userScore, computerScore) {
+function displayEndGame({ roundNumber, userScore, computerScore }) {
   console.clear();
-  displayScoreboard(roundNumber, userScore, computerScore);
+  displayScoreboard(gameState);
+
   if (userScore === FINISHING_SCORE) {
     promptResult(`You beat the computer in ${roundNumber} rounds!`);
   } else if (computerScore === FINISHING_SCORE) {
@@ -100,7 +102,7 @@ function displayEndGame(roundNumber, userScore, computerScore) {
   prompt(messages.farewell);
 }
 
-function displayScoreboard(roundNumber, userScore, computerScore) {
+function displayScoreboard({ roundNumber, userScore, computerScore }) {
   promptInfo(`Round Number: ${roundNumber}`);
   promptInfo(`Your score: ${userScore}`);
   promptInfo(`Computer score: ${computerScore}`);
@@ -135,14 +137,14 @@ function playerWins(userChoice, computerChoice) {
 
 function updateScoreboard(userChoice, computerChoice) {
   if (playerWins(userChoice, computerChoice)) {
-    userScore++;
+    gameState.userScore++;
   } else if (!(userChoice === computerChoice)) {
-    computerScore++;
+    gameState.computerScore++;
   }
 }
 
 function newRound() {
-  roundNumber += 1;
+  gameState.roundNumber += 1;
 
   prompt(messages.playAgain);
   let playAgain = readline.question().trim().toLowerCase();
@@ -164,7 +166,7 @@ function newRound() {
 function gameLoop() {
   do {
     console.clear();
-    displayScoreboard(roundNumber, userScore, computerScore);
+    displayScoreboard(gameState);
 
     let userChoice = getUserChoice();
     let computerChoice = getComputerChoice();
@@ -173,8 +175,11 @@ function gameLoop() {
     displayResults(userChoice, computerChoice);
     updateScoreboard(userChoice, computerChoice);
 
-    if (userScore === FINISHING_SCORE || computerScore === FINISHING_SCORE) {
-      displayEndGame(roundNumber, userScore, computerScore);
+    if (
+      gameState.userScore === FINISHING_SCORE ||
+      gameState.computerScore === FINISHING_SCORE
+    ) {
+      displayEndGame(gameState);
       break;
     }
   } while (newRound());
