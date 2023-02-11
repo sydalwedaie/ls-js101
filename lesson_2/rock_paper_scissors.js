@@ -32,7 +32,9 @@ const messages = {
 const gameState = {
   roundNumber: 1,
   userScore: 0,
+  userChoice: "",
   computerScore: 0,
+  computerChoice: "",
 };
 
 // HELPER FUNCTIONS
@@ -82,7 +84,7 @@ function displayWelcom() {
   prompt(messages.startPrompt);
 }
 
-function displayResults(userChoice, computerChoice) {
+function displayResults({ userChoice, computerChoice }) {
   if (playerWins(userChoice, computerChoice)) {
     promptResult(messages.userWins);
   } else if (userChoice === computerChoice) {
@@ -135,15 +137,15 @@ function playerWins(userChoice, computerChoice) {
   return RULES[userChoice].includes(computerChoice);
 }
 
-function updateScoreboard(userChoice, computerChoice) {
-  if (playerWins(userChoice, computerChoice)) {
+function updateScoreboard(gameState) {
+  if (playerWins(gameState.userChoice, gameState.computerChoice)) {
     gameState.userScore++;
-  } else if (!(userChoice === computerChoice)) {
+  } else if (!(gameState.userChoice === gameState.computerChoice)) {
     gameState.computerScore++;
   }
 }
 
-function newRound() {
+function newRound(gameState) {
   gameState.roundNumber += 1;
 
   prompt(messages.playAgain);
@@ -163,17 +165,19 @@ function newRound() {
   return true;
 }
 
-function gameLoop() {
+function gameLoop(gameState) {
   do {
     console.clear();
     displayScoreboard(gameState);
 
-    let userChoice = getUserChoice();
-    let computerChoice = getComputerChoice();
+    gameState.userChoice = getUserChoice();
+    gameState.computerChoice = getComputerChoice();
 
-    prompt(`You chose: ${userChoice}, computer chose: ${computerChoice}`);
-    displayResults(userChoice, computerChoice);
-    updateScoreboard(userChoice, computerChoice);
+    prompt(
+      `You chose: ${gameState.userChoice}, computer chose: ${gameState.computerChoice}`
+    );
+    displayResults(gameState);
+    updateScoreboard(gameState);
 
     if (
       gameState.userScore === FINISHING_SCORE ||
@@ -182,13 +186,13 @@ function gameLoop() {
       displayEndGame(gameState);
       break;
     }
-  } while (newRound());
+  } while (newRound(gameState));
 }
 
 function startGame() {
   displayWelcom();
   let start = readline.question();
-  if (start || start.trim() === "") gameLoop();
+  if (start || start.trim() === "") gameLoop(gameState);
 }
 
 // RUN GAME
