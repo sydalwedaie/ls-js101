@@ -41,6 +41,7 @@ const gameState = {
 function blankLine() {
   console.log("");
 }
+
 function prompt(message) {
   console.log(`=> ${message}`);
 }
@@ -149,7 +150,7 @@ function updateScoreboard(gameState) {
   }
 }
 
-function newRound(gameState) {
+function newRound() {
   blankLine();
   prompt(messages.playAgain);
   let playAgain = readline.question().trim().toLowerCase();
@@ -197,7 +198,7 @@ function gameLoop(gameState) {
       displayEndGame(gameState);
       break;
     }
-  } while (newRound(gameState));
+  } while (newRound());
 }
 
 function startGame() {
