@@ -24,13 +24,13 @@ const messages = {
   userWins: "Wahooo! You win!",
   computerWins: "Gosh! Computer wins!",
   tie: "It's a tie!",
-  playAgain: "Hit Enter to play again, or 'n' to exit:",
+  playAgain: "Hit Enter to play next round, or 'n' to exit:",
   playAgainError: "Invalid input (Enter to play again, 'n' to exit.)",
   farewell: "Thank you for playing!",
 };
 
 const gameState = {
-  roundNumber: 1,
+  roundNumber: 0,
   userScore: 0,
   userChoice: "",
   computerScore: 0,
@@ -38,6 +38,9 @@ const gameState = {
 };
 
 // HELPER FUNCTIONS
+function blankLine() {
+  console.log("");
+}
 function prompt(message) {
   console.log(`=> ${message}`);
 }
@@ -79,12 +82,13 @@ function getFullName(abbrevation) {
 function displayWelcom() {
   console.clear();
   prompt(messages.welcom);
+  blankLine();
   prompt(messages.instructions);
   console.table(RULES);
-  prompt(messages.startPrompt);
 }
 
 function displayResults({ userChoice, computerChoice }) {
+  blankLine();
   if (playerWins(userChoice, computerChoice)) {
     promptResult(messages.userWins);
   } else if (userChoice === computerChoice) {
@@ -146,8 +150,7 @@ function updateScoreboard(gameState) {
 }
 
 function newRound(gameState) {
-  gameState.roundNumber += 1;
-
+  blankLine();
   prompt(messages.playAgain);
   let playAgain = readline.question().trim().toLowerCase();
 
@@ -165,13 +168,24 @@ function newRound(gameState) {
   return true;
 }
 
+function isEndGame(gameState) {
+  return (
+    gameState.userScore === FINISHING_SCORE ||
+    gameState.computerScore === FINISHING_SCORE
+  );
+}
+
 function gameLoop(gameState) {
   do {
+    gameState.roundNumber += 1;
     console.clear();
     displayScoreboard(gameState);
 
     gameState.userChoice = getUserChoice();
     gameState.computerChoice = getComputerChoice();
+
+    clearLastLines(1);
+    blankLine();
 
     prompt(
       `You chose: ${gameState.userChoice}, computer chose: ${gameState.computerChoice}`
@@ -179,10 +193,7 @@ function gameLoop(gameState) {
     displayResults(gameState);
     updateScoreboard(gameState);
 
-    if (
-      gameState.userScore === FINISHING_SCORE ||
-      gameState.computerScore === FINISHING_SCORE
-    ) {
+    if (isEndGame(gameState)) {
       displayEndGame(gameState);
       break;
     }
@@ -191,8 +202,9 @@ function gameLoop(gameState) {
 
 function startGame() {
   displayWelcom();
-  let start = readline.question();
-  if (start || start.trim() === "") gameLoop(gameState);
+  prompt(messages.startPrompt);
+  readline.question();
+  gameLoop(gameState);
 }
 
 // RUN GAME
