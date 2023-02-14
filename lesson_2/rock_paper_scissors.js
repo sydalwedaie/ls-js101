@@ -29,14 +29,6 @@ const messages = {
   farewell: "Thank you for playing!",
 };
 
-const gameState = {
-  roundNumber: 0,
-  userScore: 0,
-  userChoice: "",
-  computerScore: 0,
-  computerChoice: "",
-};
-
 // HELPER FUNCTIONS
 function blankLine() {
   console.log("");
@@ -97,22 +89,24 @@ function displayResults({ userChoice, computerChoice }) {
   } else promptResult(messages.computerWins);
 }
 
-function displayEndGame({ roundNumber, userScore, computerScore }) {
+function displayEndGame(gameState) {
   console.clear();
   displayScoreboard(gameState);
 
-  if (userScore === FINISHING_SCORE) {
-    promptResult(`You beat the computer in ${roundNumber} rounds!`);
-  } else if (computerScore === FINISHING_SCORE) {
-    promptResult(`The computer beat you in ${roundNumber} rounds! Game Over!`);
+  if (gameState.userScore === FINISHING_SCORE) {
+    promptResult(`You beat the computer in ${gameState.roundNumber} rounds!`);
+  } else if (gameState.computerScore === FINISHING_SCORE) {
+    promptResult(
+      `The computer beat you in ${gameState.roundNumber} rounds! Game Over!`
+    );
   }
   prompt(messages.farewell);
 }
 
-function displayScoreboard({ roundNumber, userScore, computerScore }) {
-  promptInfo(`Round Number: ${roundNumber}`);
-  promptInfo(`Your score: ${userScore}`);
-  promptInfo(`Computer score: ${computerScore}`);
+function displayScoreboard(gameState) {
+  promptInfo(`Round Number: ${gameState.roundNumber}`);
+  promptInfo(`Your score: ${gameState.userScore}`);
+  promptInfo(`Computer score: ${gameState.computerScore}`);
   prompt("------------------");
 }
 
@@ -202,6 +196,14 @@ function gameLoop(gameState) {
 }
 
 function startGame() {
+  const gameState = {
+    roundNumber: 0,
+    userScore: 0,
+    userChoice: "",
+    computerScore: 0,
+    computerChoice: "",
+  };
+
   displayWelcom();
   prompt(messages.startPrompt);
   readline.question();
